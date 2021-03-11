@@ -473,6 +473,8 @@ void knapsack(u32 knapsack_size) {
         //printf("Fitness: %d \n", solutions_fitnesses[i]); 
     }
     
+    u32 best_solution_idx = 0;
+    u32 best_solution_fitness = 0;
     
     u32 generation = 0;
     while(generation < ITERATIONS) {
@@ -496,6 +498,7 @@ void knapsack(u32 knapsack_size) {
         
         u32 sum_fitness = 0;
         u32 max_fitness = 0;
+        u32 max_fitness_idx = 0;
         for(u32 i = 0; i < N; i++) {
             u32 idx_1 = 0;
             u32 idx_2 = 0;
@@ -542,9 +545,9 @@ void knapsack(u32 knapsack_size) {
                 
                 //bit of a hack, and a bit brute-force: if current crossover item already exists, then pick the first item that doesn't exist from the current parent,
                 //if we still haven't found a unique item try the other parent, if we still haven't found a unique item 
+                u32 rand_item = items_array[j];
                 if(naive_item_already_exists(solutions_indices[i], j, items_array[j])) {
                     //This is horrible code but it's fine for this
-                    u32 rand_item = 0;
                     for(u32 i = 0; i < parent_1_count; i++) {
                         rand_s(&rand_item);
                         rand_item = rand_item % NUM_ITEMS;
@@ -569,10 +572,17 @@ void knapsack(u32 knapsack_size) {
                                 break;
                         }
                     }
+                    
+                    //can't find another unique item, give up
+                    if(naive_item_already_exists(solutions_indices[i], j, rand_item)) {
+                        solutions_item_counts[i] = j;
+                        parent_max_count = j;
+                        break;
+                    }
                 }
                 
                 
-                solutions_indices[i][j] = items_array[j];
+                solutions_indices[i][j] = rand_item;
                 
                 u32 rand = 0;
                 rand_s(&rand);
@@ -595,6 +605,7 @@ void knapsack(u32 knapsack_size) {
             sum_fitness += solutions_fitnesses[i];
             if(solutions_fitnesses[i] > max_fitness) {
                 max_fitness = solutions_fitnesses[i];
+                max_fitness_idx = i;
             }
             /*
             if(solutions_fitnesses[i] != 0) {
@@ -607,10 +618,22 @@ void knapsack(u32 knapsack_size) {
                 printf("\n");
             }*/
         }
+        
+        if(max_fitness > best_solution_fitness) {
+            best_solution_fitness = max_fitness;
+            best_solution_idx = max_fitness_idx;
+        }
+        
         f32 avg_fitness = (f32)sum_fitness / (f32)N;
         //printf("Generation: %d Best Fitness: %d Avg Fitness: %.2f \n", generation, max_fitness, avg_fitness); 
         printf("%d,%d,%.2f\n", generation, max_fitness, avg_fitness); 
         generation++;
     }
-    
+    printf("Max Fitness Solution Was: \n");
+    for (u32 j = 0; j < solutions_item_counts[best_solution_idx]; j += 1){
+        u32 idx = solutions_indices[best_solution_idx][j];
+        printf("{Weight: %d Value: %d} ", weights[idx], values[idx]);
+    }
+    printf("Fitness: %d", best_solution_fitness);
+    printf("\n");
 }
