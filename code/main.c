@@ -25,7 +25,8 @@ int main(void) {
     //part_ai();
     //part_aii("11001101110011001111", SIZE);
     //part_aiii(50);
-    knapsack(103);
+    //knapsack(103);
+    knapsack(156);
 }
 
 void part_ai(void) {
@@ -142,7 +143,8 @@ void part_ai(void) {
         }
         
         average_fitness[generation] = (f32)sum_fitness / (f32)N;
-        printf("Generation: %d Best Fitness: %d Avg Fitness: %.2f \n", generation, max_fitness, average_fitness[generation]); 
+        //printf("Generation: %d Best Fitness: %d Avg Fitness: %.2f \n", generation, max_fitness, average_fitness[generation]); 
+        printf("%d,%d,%.2f\n", generation, max_fitness, average_fitness[generation]); 
         generation++;
     }
 }
@@ -266,7 +268,8 @@ void part_aii(char *target, u32 size) {
         }
         
         average_fitness[generation] = (f32)sum_fitness / (f32)N;
-        printf("Generation: %d Best Fitness: %d Avg Fitness: %.2f \n", generation, max_fitness, average_fitness[generation]); 
+        //printf("Generation: %d Best Fitness: %d Avg Fitness: %.2f \n", generation, max_fitness, average_fitness[generation]); 
+        printf("%d,%d,%.2f\n", generation, max_fitness, average_fitness[generation]); 
         generation++;
     }
 }
@@ -400,7 +403,8 @@ void part_aiii(u32 num_initial_all_zero) {
         }
         
         average_fitness[generation] = (f32)sum_fitness / (f32)N;
-        printf("Generation: %d Best Fitness: %d Avg Fitness: %.2f \n", generation, max_fitness, average_fitness[generation]); 
+        //printf("Generation: %d Best Fitness: %d Avg Fitness: %.2f \n", generation, max_fitness, average_fitness[generation]); 
+        printf("%d,%d,%.2f\n", generation, max_fitness, average_fitness[generation]); 
         generation++;
     }
 }
@@ -604,7 +608,8 @@ void knapsack(u32 knapsack_size) {
             }*/
         }
         f32 avg_fitness = (f32)sum_fitness / (f32)N;
-        printf("Generation: %d Best Fitness: %d Avg Fitness: %.2f \n", generation, max_fitness, avg_fitness); 
+        //printf("Generation: %d Best Fitness: %d Avg Fitness: %.2f \n", generation, max_fitness, avg_fitness); 
+        printf("%d,%d,%.2f\n", generation, max_fitness, avg_fitness); 
         generation++;
     }
     
